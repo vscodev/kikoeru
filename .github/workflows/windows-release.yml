@@ -1,0 +1,74 @@
+name: Windows Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  CGO_ENABLED: 1
+
+jobs:
+  release:
+    name: Release
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - amd64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.GH_REPO }}
+          token: ${{ secrets.GH_PAT }}
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+          check-latest: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'yarn'
+          cache-dependency-path: web/yarn.lock
+
+      - name: Build frontend
+        shell: bash
+        run: |
+          yarn install --frozen-lockfile --non-interactive
+          yarn quasar build
+          cp -a dist/spa/. $GITHUB_WORKSPACE/public/dist/
+        working-directory: ./web
+
+      - name: Build
+        shell: bash
+        run: |
+          go mod download
+          GOARCH=${{ matrix.platform }} go build -ldflags "-s -w" -o kikoeru.exe
+
+      - name: Package
+        shell: bash
+        run: |
+          dist="kikoeru-windows-${{ matrix.platform }}"
+          mkdir $dist
+          cp kikoeru.exe $dist
+          7z a "$dist.zip" $dist
+
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        with:
+          name: v0.0.1
+          tag_name: v0.0.1
+          body: |
+            When updating to a new version, it may not be compatible with previous ones. If an error occurs, you can manually delete the `data` folder and try again, everything would work but the whole data will be lost.
+          files: |
+            kikoeru-*.*
