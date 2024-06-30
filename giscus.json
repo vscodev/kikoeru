@@ -1,0 +1,4 @@
+{
+  "origins": ["https://www.voicehub.top"],
+  "originsRegex": ["http://localhost:[0-9]+"]
+}
