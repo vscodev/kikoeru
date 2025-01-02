@@ -1,0 +1,28 @@
+name: Prune untagged images
+
+on:
+  workflow_dispatch:
+
+  workflow_run:
+    workflows:
+      - Publish Docker image
+      - Publish Docker dev image
+    types:
+      - completed
+
+jobs:
+  prune-untagged-images:
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+
+    steps:
+      - name: Prune untagged images
+        uses: dataaxiom/ghcr-cleanup-action@v1
+        with:
+          package: 'kikoeru'
+          delete-untagged: true
+          delete-ghost-images: true
+          delete-partial-images: true
+          delete-orphaned-images: true
