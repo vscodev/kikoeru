@@ -1,0 +1,34 @@
+name: "Feature request"
+description: Feature request
+labels: [enhancement]
+body:
+  - type: checkboxes
+    attributes:
+      label: 请确认以下所有内容
+      description: |
+        你必须勾选以下所有内容，否则你的issue可能会被直接关闭。或者你可以去 [讨论区](https://github.com/vscodev/kikoeru/discussions) 。
+      options:
+        - label: |
+            我确定使用的是 `Kikoeru` 的最新版本。
+        - label: |
+            我确定没有重复的issue或讨论。
+        - label: |
+            我确定这是一个受众需求而不是单纯出于个人意愿，并且当前没有被实现。
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: 需求描述
+    validations:
+      required: true
+  - type: textarea
+    id: suggested-solution
+    attributes:
+      label: 实现思路
+      description: |
+        实现此需求的解决思路。
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 附件
+      description: |
+        相关的任何其他上下文或截图，或者你觉得有帮助的信息。
