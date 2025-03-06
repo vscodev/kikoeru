@@ -1,5 +1,8 @@
 # Kikoeru
 
+![GitHub Release](https://img.shields.io/github/v/release/vscodev/kikoeru)
+![GitHub Downloads](https://img.shields.io/github/downloads/vscodev/kikoeru/total)
+
 一个自托管的DLsite音声作品整理和媒体播放软件，为你提供极致的音声视听体验。
 
 ![screenshot](screenshot.png)
