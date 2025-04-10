@@ -1,0 +1,56 @@
+name: "Feature request"
+description: Feature request
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Kikoeru的开发准则是 **小而美** ，而非 **大而全** ，对于违背程序本意、偏小众或收益不大的需求是不会被实现的。
+
+  - type: checkboxes
+    attributes:
+      label: 请确认以下所有内容
+      description: |
+        你必须勾选以下所有内容，否则你的issue可能会被直接关闭。或者你可以去 [讨论区](https://github.com/vscodev/kikoeru/discussions) 。
+      options:
+        - label: |
+            我已经阅读了 [文档](https://github.com/vscodev/kikoeru/wiki) 和 [提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md) 。
+          required: true
+        - label: |
+            我确定没有重复的issue或讨论。
+        - label: |
+            我确定这是一个受众需求而不是单纯出于个人意愿。
+          required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Kikoeru 版本
+      description: |
+        你使用的是哪个版本的软件？你可以在 `仪表盘` -> `系统信息` -> `程序版本` 中找到。
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: 需求描述
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested-solution
+    attributes:
+      label: 实现思路
+      description: |
+        实现此需求的解决思路。
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 附件
+      description: |
+        相关的任何其他上下文或截图，或者你觉得有帮助的信息。
