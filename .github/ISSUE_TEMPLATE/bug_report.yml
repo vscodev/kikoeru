@@ -1,0 +1,56 @@
+name: "Bug report"
+description: Bug report
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你花时间填写此错误报告，请 **务必确认你的issue不是重复的且不是因为你的操作或版本问题** 。
+
+  - type: checkboxes
+    attributes:
+      label: 请确认以下内容
+      description: |
+        你必须勾选以下所有内容，否则你的issue可能会被直接关闭。或者你可以去 [讨论区](https://github.com/vscodev/kikoeru/discussions) 。
+      options:
+        - label: |
+            我已经阅读了 [文档](https://github.com/vscodev/kikoeru/wiki) 和 [提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md) 。
+          required: true
+        - label: |
+            我确定没有重复的issue或讨论。
+        - label: |
+            我确定是程序本身的问题，而不是其他原因（例如 `网络` ，`依赖` 或 `操作` ）。
+
+  - type: input
+    id: version
+    attributes:
+      label: Kikoeru 版本
+      description: |
+        你使用的是哪个版本的软件？你可以在 `仪表盘` -> `系统信息` -> `程序版本` 中找到。
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: input
+    id: driver
+    attributes:
+      label: 使用的存储驱动
+      description: |
+        你使用的是哪个存储驱动？
+      placeholder: "OneDrive"
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: 问题描述
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志
+      description: |
+        请复制粘贴错误日志，或者截图。

@@ -1,0 +1,80 @@
+name: macOS Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: macos-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - amd64
+          - arm64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.GH_REPO }}
+          token: ${{ secrets.GH_PAT }}
+          fetch-depth: 0
+
+      - name: Checkout latest version
+        run: |
+          version=$(git describe --tags --abbrev=0)
+          git checkout "$version"
+          echo "KIKOERU_VERSION=$version" >> $GITHUB_ENV
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          check-latest: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'web/package.json'
+          check-latest: true
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Build frontend
+        run: |
+          pnpm install
+          pnpm build
+          cp -a dist/spa/. $GITHUB_WORKSPACE/public/dist/
+        working-directory: ./web
+
+      - name: Build
+        run: |
+          go mod download
+          export GOARCH=${{ matrix.arch }}
+          bash build.sh
+
+      - name: Package
+        run: |
+          dist="kikoeru-macos-${{ matrix.arch }}"
+          mkdir -p "$dist"
+          cp kikoeru scripts/start.sh "$dist/"
+          tar zcf "$dist.tar.gz" "$dist/"
+
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ env.KIKOERU_VERSION }}
+          tag_name: ${{ env.KIKOERU_VERSION }}
+          draft: true
+          body_path: CHANGELOG
+          files: |
+            kikoeru-*.*

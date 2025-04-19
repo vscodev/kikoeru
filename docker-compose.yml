@@ -1,0 +1,17 @@
+version: "3.6"
+
+services:
+  kikoeru:
+    image: ghcr.io/vscodev/kikoeru:latest
+    container_name: kikoeru
+    ports:
+      - "2333:2333"
+    volumes:
+      - "./data/:/opt/kikoeru/data/"
+    environment:
+      - TZ=Asia/Shanghai
+      - PUID=0
+      - PGID=0
+      - UMASK=022
+      - KIKOERU_LOCALE=zh-CN
+    restart: unless-stopped
